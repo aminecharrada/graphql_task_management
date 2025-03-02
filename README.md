@@ -1,88 +1,254 @@
-# GraphQL Task Management API
+# Task Management GraphQL API
 
-A simple task management API built with GraphQL, Apollo Server, Node.js, and Express. This project demonstrates how to create and use a GraphQL API for managing tasks.
+This project is a **Task Management API** built using **Node.js**, **Express**, and **Apollo Server** with **GraphQL**. The API allows users to manage tasks, including adding, retrieving, updating, completing, and deleting tasks.
 
-## Project Overview
+---
 
-This API allows you to:
+## 📂 Project Structure
 
-- View all tasks or a specific task by ID
-- Add new tasks with title, description, completion status, and duration
-- Mark tasks as completed
+```
+/project-root
+│
+├── taskSchema.gql            # GraphQL Schema Definition
+├── taskSchema.js              # Loads and builds schema from taskSchema.gql
+├── taskResolver.js            # Resolvers defining business logic for GraphQL operations
+├── server.js                   # Main Express server integrating Apollo GraphQL
+├── README.md                   # Documentation (this file)
+└── package.json                # Node dependencies
+```
+
+---
+
+## 📋 Features
+
+- Retrieve all tasks
+- Retrieve a single task by ID
+- Add new tasks
 - Update task descriptions
+- Mark tasks as completed
 - Delete tasks
 
-## Technologies Used
+---
 
-- **Node.js**: JavaScript runtime
-- **Express**: Web application framework
-- **GraphQL**: Query language for APIs
-- **Apollo Server**: GraphQL server implementation
-- **@graphql-tools/schema**: Tools for manipulating GraphQL schemas
+## 🚀 Installation
 
-## Project Structure
+1. Clone this repository:
+    ```bash
+    git clone <repository-url>
+    cd <project-folder>
+    ```
 
-- `index.js`: Main server file that configures Apollo Server with Express
-- `taskSchema.gql`: GraphQL schema definition file
-- `taskSchema.js`: JavaScript module that loads the GraphQL schema
-- `taskResolver.js`: Contains the resolver functions for GraphQL queries and mutations
-- `sample-queries.md`: Example queries to test the GraphQL API
+2. Install dependencies:
+    ```bash
+    npm install
+    ```
 
-## Task Model
+3. Start the server:
+    ```bash
+    npm start
+    ```
 
-Each task in the system has the following properties:
+4. The GraphQL Playground will be available at:
+    ```
+    http://localhost:4000/graphql
+    ```
 
-- `id`: Unique identifier for the task
-- `title`: Task title
-- `description`: Detailed description of the task
-- `completed`: Boolean indicating whether the task is completed
-- `duration`: Time in days estimated to complete the task (integer)
+---
 
-## GraphQL Operations
+## 📚 GraphQL Schema
+
+### Task Type
+
+```graphql
+type Task {
+  id: ID!
+  title: String!
+  description: String!
+  completed: Boolean!
+  duration: Int
+}
+```
 
 ### Queries
 
-- `task(id: ID!)`: Get a specific task by ID
-- `tasks`: Get all tasks
+```graphql
+type Query {
+  task(id: ID!): Task
+  tasks: [Task]
+}
+```
 
 ### Mutations
 
-- `addTask`: Create a new task
-- `completeTask`: Mark a task as completed
-- `changeDescription`: Update a task's description
-- `deleteTask`: Remove a task by ID
+```graphql
+type Mutation {
+  addTask(title: String!, description: String!, completed: Boolean!, duration: Int): Task
+  completeTask(id: ID!): Task
+  changeDescription(id: ID!, description: String!): Task
+  deleteTask(id: ID!): Boolean
+}
+```
 
-## Getting Started
+---
 
-1. Install dependencies:
+## 📌 Sample GraphQL Queries & Mutations
 
-   ```
-   npm install
-   ```
+### 1. Get All Tasks
+```graphql
+query {
+  tasks {
+    id
+    title
+    description
+    completed
+    duration
+  }
+}
+```
 
-2. Start the server:
+### 2. Get a Single Task
+```graphql
+query {
+  task(id: "1") {
+    id
+    title
+    description
+    completed
+    duration
+  }
+}
+```
 
-   ```
-   npm start
-   ```
+### 3. Add New Task
+```graphql
+mutation {
+  addTask(
+    title: "Build a GraphQL API"
+    description: "Create a basic API using Node.js, Express, and Apollo Server"
+    completed: false
+    duration: 5
+  ) {
+    id
+    title
+    description
+    completed
+    duration
+  }
+}
+```
 
-3. Open your browser and navigate to:
+### 4. Mark Task as Completed
+```graphql
+mutation {
+  completeTask(id: "1") {
+    id
+    title
+    completed
+  }
+}
+```
 
-   ```
-   http://localhost:5000/graphql
-   ```
+### 5. Update Task Description
+```graphql
+mutation {
+  changeDescription(id: "2", description: "Updated description for task 2") {
+    id
+    title
+    description
+  }
+}
+```
 
-4. Use the Apollo Studio interface to test the API with the provided sample queries.
+### 6. Delete a Task
+```graphql
+mutation {
+  deleteTask(id: "3")
+}
+```
 
-## Sample Queries
+---
 
-Check the `sample-queries.md` file for example queries and mutations you can run in Apollo Studio.
+## ⚙️ Technologies Used
 
-## Educational Purpose
+- **Node.js** - Backend runtime
+- **Express** - Web framework
+- **Apollo Server** - GraphQL server
+- **GraphQL Tools** - Schema and resolvers management
+- **body-parser** - Parse incoming request bodies
+- **graphql** - GraphQL query language
 
-This project was created as a learning resource for understanding how to:
+---
 
-- Configure GraphQL with Node.js and Express
-- Create GraphQL schemas and resolvers
-- Handle queries and mutations in a GraphQL API
-- Structure a simple task management application
+## 📄 How the Project Works
+
+1. **Schema Definition (`taskSchema.gql`)**  
+   Defines types, queries, and mutations for the task management system.
+2. **Resolvers (`taskResolver.js`)**  
+   Implements the logic for each query and mutation using an in-memory array (`tasks`).
+3. **Schema Loader (`taskSchema.js`)**  
+   Loads the schema from `taskSchema.gql` and builds it into a GraphQL executable schema.
+4. **Server (`server.js`)**  
+   Combines Express with Apollo Server to expose the `/graphql` endpoint.
+
+---
+
+## 📝 Example Task Data
+
+```json
+[
+  {
+    "id": "1",
+    "title": "Développement Front-end pour Site E-commerce",
+    "description": "Créer une interface utilisateur réactive en utilisant React et Redux pour un site e-commerce.",
+    "completed": false,
+    "duration": 14
+  },
+  {
+    "id": "2",
+    "title": "Développement Back-end pour Authentification Utilisateur",
+    "description": "Implémenter un système d'authentification et d'autorisation pour une application web en utilisant Node.js, Express, et Passport.js.",
+    "completed": false,
+    "duration": 7
+  },
+  {
+    "id": "3",
+    "title": "Tests et Assurance Qualité pour Application Web",
+    "description": "Développer et exécuter des plans de test et des cas de test complets.",
+    "completed": false,
+    "duration": 5
+  }
+]
+```
+
+---
+
+## 🔧 Environment Variables (Optional)
+
+You can set the server port using:
+```
+PORT=4000
+```
+
+---
+
+## 🧰 Running the Project with Nodemon (Optional)
+
+To enable auto-restart during development, install nodemon:
+```bash
+npm install -g nodemon
+```
+Then run:
+```bash
+nodemon server.js
+```
+
+---
+
+## 🏁 Future Enhancements
+
+- Persist tasks to a database (MongoDB, PostgreSQL, etc.)
+- Add user authentication and authorization
+- Add more advanced filtering and sorting capabilities
+- Implement unit and integration tests
+
+
