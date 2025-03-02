@@ -1,0 +1,25 @@
+{
+  "name": "tp-graphql",
+  "version": "1.0.0",
+  "description": "GraphQL API for task management",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "graphql",
+    "apollo",
+    "express",
+    "node"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@apollo/server": "^4.11.3",
+    "@graphql-tools/schema": "^9.0.19",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.2",
+    "graphql": "^16.10.0"
+  }
+}
